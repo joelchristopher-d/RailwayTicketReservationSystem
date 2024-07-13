@@ -1,0 +1,126 @@
+# passenger details
+class Passenger:
+    Id=1    
+    def __init__(self,Name,Age,Gender,Berth):
+        self.Name = Name
+        self.Age = Age
+        self.Gender = Gender
+        self.Berth = Berth
+        self.alloted = ""
+        self.number=-1
+        self.PassengerId=Passenger.Id
+        Passenger.Id+=1
+        
+# booking       
+class BookTickets:
+    aLB=1
+    aMB=1
+    aUB=1
+    aRAC=1
+    aWL=1
+    lb = [i for i in range(1,aLB+1)]
+    mb = [i for i in range(1,aMB+1)]
+    ub = [i for i in range(1,aUB+1)]
+    rac = [i for i in range(1,aRAC+1)]
+    wl = [i for i in range(1,aWL+1)]
+    bookedTickets = []
+    ractickets=[]
+    wltickets=[]
+    passengerdetails={}
+    def Book(self,p, snum, berth):
+        p.number = snum
+        p.alloted = berth
+        BookTickets.passengerdetails[p.PassengerId]=p
+        BookTickets.bookedTickets.append(p.PassengerId)
+        print(f"Id:{p.PassengerId}\nName:{p.Name}\nAge:{p.Age}\nGender:{p.Gender}\nAllotedBerth:{p.alloted}{p.number}\n")
+        print("--Booked succesfully--")
+
+    def Rac(self,p, snum, berth):
+        p.number = snum
+        p.alloted = berth
+        BookTickets.passengerdetails[p.PassengerId]=p
+        BookTickets.ractickets.append(p.PassengerId)
+        print(f"Id:{p.PassengerId}\nName:{p.Name}\nAge:{p.Age}\nGender:{p.Gender}\nAllotedBerth:{p.alloted}{p.number}\n")
+        print("--Booked RAC succesfully--")
+        
+    def WLself(self,p, snum, berth):
+        p.number = snum
+        p.alloted = berth
+        BookTickets.passengerdetails[p.PassengerId]=p
+        BookTickets.wltickets.append(p.PassengerId)
+        print(f"Id:{p.PassengerId}\nName:{p.Name}\nAge:{p.Age}\nGender:{p.Gender}\nAllotedBerth:{p.alloted}{p.number}\n")
+        print("--Booked WL succesfully--")
+        
+    def PassengerDetails():
+        if len(BookTickets.passengerdetails)==0:
+            print("No Passenger Available")
+        else:
+            for passenger in BookTickets.passengerdetails:
+                print(f"PassengerID: {BookTickets.passengerdetails[passenger].PassengerId}\nName:{BookTickets.passengerdetails[passenger].Name}\nAge:{BookTickets.passengerdetails[passenger].Age}")
+                print(f"Gender{BookTickets.passengerdetails[passenger].Gender}\nAllotedBerth{BookTickets.passengerdetails[passenger].alloted}{BookTickets.passengerdetails[passenger].number}\n")
+
+
+
+def BookMain(p):
+    tb = BookTickets()
+    if (p.Berth=="L" and BookTickets.aLB>0) or (p.Berth=="M" and BookTickets.aMB>0) or (p.Berth=="U" and BookTickets.aUB>0):
+        if p.Berth=="L":
+            print("\n--Lower Given--\n")
+            tb.Book(p,(BookTickets.lb.pop(0)),"L")
+            BookTickets.aLB-=1
+        elif p.Berth=="M":
+            print("\n--Middle Given--\n")
+            tb.Book(p,(BookTickets.mb.pop(0)),"M")
+            BookTickets.aMB-=1
+        elif p.Berth=="U":
+            print("\n--Upper Given--\n")
+            tb.Book(p,(BookTickets.ub.pop(0)),"U")
+            BookTickets.aUB-=1
+    else:
+        if BookTickets.aLB>0:
+            print("\n--Lower Given--\n")
+            tb.Book(p,(BookTickets.lb.pop(0)),"L")
+            BookTickets.aLB-=1
+        elif BookTickets.aMB>0:
+            print("\n--Middle Given--\n")
+            tb.Book(p,(BookTickets.mb.pop(0)),"M")
+            BookTickets.aMB-=1
+        elif BookTickets.aUB>0:
+            print("\n--Upper Given--\n")
+            tb.Book(p,(BookTickets.ub.pop(0)),"U")
+            BookTickets.aUB-=1
+        elif BookTickets.aRAC>0:
+            print("\n--RAC Given--\n")
+            tb.Rac(p,(BookTickets.rac.pop(0)),"RAC")
+            BookTickets.aRAC-=1
+        elif BookTickets.aWL>0:
+            print("\n--You're in Waiting List--\n")
+            tb.Book(p,(BookTickets.wl.pop(0)),"WL")
+            BookTickets.aWL-=1            
+        else:
+            print("--No Berth available--")
+            
+
+          
+def Cancel(self,PId):
+    tb = BookTickets()
+    if PId not in BookTickets.bookedTickets:
+        print("PassengerID not found")
+
+    
+if __name__ == "__main__":  
+    while(True):
+        first = int(input("1.Book\n2.Cancel\n3.Passenger Details\n4.Available Tickets\n5.Exit\n"))
+        if first == 1:
+            print("--Booking Page--")
+            name = input("Enter Name")
+            age = int(input("Your Age"))
+            gender = input("M F O")
+            berth = input("L U M")
+            p = Passenger(name,age,gender,berth) 
+            BookMain(p)
+            
+        elif first == 3:
+            BookTickets.PassengerDetails()
+        elif first == 5:
+            break
